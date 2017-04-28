@@ -11007,7 +11007,18 @@ function globalReducer() {
     return state;
   }
 }
-var store = createStore(globalReducer);
+
+if (saveStore != null) {
+  var store = createStore(globalReducer, saveStore);
+} else {
+  var store = createStore(globalReducer);
+}
+function handleChange() {
+  console.log(store.getState());
+  var data = JSON.stringify(store.getState());
+  fetch('./saveApp?storeState=' + data).then(function (response) {});
+}
+store.subscribe(handleChange);
 
 var PlayerAdd = function (_React$Component) {
   _inherits(PlayerAdd, _React$Component);
@@ -11088,10 +11099,6 @@ var PlayerList = function (_React$Component2) {
     key: 'render',
     value: function render() {
 
-      this.props.playerList;
-      var li = [];
-      li.push(this.props.playerList);
-      console.log(li);
       var players = [];
       for (var i = 0; i < this.props.playerList.length; i++) {
         players.push(React.createElement(

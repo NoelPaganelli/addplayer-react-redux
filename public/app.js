@@ -14,8 +14,18 @@ function globalReducer(state={playerCount: 0, playerList:[]}, action) {
     return state;
   }
 }
-const store = createStore(globalReducer);
 
+if(saveStore != null) {
+  var store = createStore(globalReducer, saveStore);
+} else {
+  var store = createStore(globalReducer);
+}
+function handleChange() {
+  console.log(store.getState());
+  var data = JSON.stringify(store.getState());
+  fetch('./saveApp?storeState='+data);
+}
+store.subscribe(handleChange);
 
 class PlayerAdd extends React.Component {
   
